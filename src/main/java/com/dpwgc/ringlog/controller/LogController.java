@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 /**
  * 日志服务接口
  */
-@CrossOrigin
 @RequestMapping("/log")
 @RestController
 public class LogController {
@@ -20,13 +19,13 @@ public class LogController {
     LogService logService;
 
     @PostMapping("/getLog")
-    public ResultUtil<Object> getLog(long start,
-                                     long end,
-                                     int lv,
-                                     String tag,
-                                     String content,
-                                     String host,
-                                     String file) {
+    public ResultUtil<Object> getLog(@RequestParam("start") long start,
+                                     @RequestParam("end") long end,
+                                     @RequestParam("lv") int lv,
+                                     @RequestParam("tag") String tag,
+                                     @RequestParam("content") String content,
+                                     @RequestParam("host") String host,
+                                     @RequestParam("file") String file) {
 
         BasicDBObject queryLog = new BasicDBObject();
 

@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InterceptorConfig implements WebMvcConfigurer {
 
     /**
-     * 提前new出 防止redis失效
+     * 提前new出
      * @return ApiInterceptor
      */
     @Bean
