@@ -21,6 +21,7 @@ public class LogMsg {
     private String content; //日志内容
     private String host;    //日志所属主机名称
     private String file;    //产生该日志的文件路径
+    private String note;    //日志备注（自定义扩展）
     private int line;       //日志产生于该文件的第几行
     private long time;      //日志产生时间
 
@@ -78,5 +79,13 @@ public class LogMsg {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getNote() {
+        return note;
     }
 }

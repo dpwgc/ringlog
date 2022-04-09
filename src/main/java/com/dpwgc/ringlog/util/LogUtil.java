@@ -22,6 +22,7 @@ public class LogUtil {
         doc.put("content", logMsg.getContent());
         doc.put("host", logMsg.getHost());
         doc.put("file", logMsg.getFile());
+        doc.put("note", logMsg.getNote());
         doc.put("line", logMsg.getLine());
         doc.put("time", logMsg.getTime());
 

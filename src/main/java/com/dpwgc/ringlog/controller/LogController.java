@@ -18,6 +18,18 @@ public class LogController {
     @Autowired
     LogService logService;
 
+    /**
+     * 根据检索条件获取日志列表
+     * @param start 时间区间（开始）
+     * @param end 时间区间（结尾）
+     * @param lv 日志级别
+     * @param tag 日志标签
+     * @param content 日志内容
+     * @param host 日志所属主机
+     * @param file 日志所属文件
+     * @param note 日志备注信息
+     * @return ResultUtil<Object>
+     */
     @PostMapping("/getLog")
     public ResultUtil<Object> getLog(@RequestParam("start") long start,
                                      @RequestParam("end") long end,
@@ -25,7 +37,8 @@ public class LogController {
                                      @RequestParam("tag") String tag,
                                      @RequestParam("content") String content,
                                      @RequestParam("host") String host,
-                                     @RequestParam("file") String file) {
+                                     @RequestParam("file") String file,
+                                     @RequestParam("note") String note) {
 
         BasicDBObject queryLog = new BasicDBObject();
 
@@ -62,6 +75,12 @@ public class LogController {
         if (file.length() > 0) {
             Pattern filePattern = Pattern.compile(file, Pattern.CASE_INSENSITIVE);
             queryLog.put("file",filePattern);
+        }
+
+        //日志备注模糊匹配
+        if (note.length() > 0) {
+            Pattern notePattern = Pattern.compile(note, Pattern.CASE_INSENSITIVE);
+            queryLog.put("note",notePattern);
         }
 
         return logService.getLog(queryLog);

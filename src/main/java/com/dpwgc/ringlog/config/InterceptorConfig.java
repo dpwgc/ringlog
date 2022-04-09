@@ -13,10 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
-    /**
-     * 提前new出
-     * @return ApiInterceptor
-     */
     @Bean
     public ApiInterceptor InterceptorBean(){
         return new ApiInterceptor();

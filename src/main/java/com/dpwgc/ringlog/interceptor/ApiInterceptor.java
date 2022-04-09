@@ -1,6 +1,7 @@
 package com.dpwgc.ringlog.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dpwgc.ringlog.util.Md5Util;
 import com.dpwgc.ringlog.util.MongodbUtil;
 import com.dpwgc.ringlog.util.ResultUtil;
 import com.mongodb.BasicDBObject;
@@ -23,12 +24,15 @@ public class ApiInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String user = request.getHeader("user");
-        String pwd = request.getHeader("pwd");
+        String pwd = Md5Util.getMd5(request.getHeader("pwd"));  //MD5加密
 
         //验证用户身份
         BasicDBObject queryUser = new BasicDBObject();
         queryUser.put("user", user);
         queryUser.put("pwd", pwd);
+
+        System.out.println(user);
+        System.out.println(pwd);
 
         //查询用户
         List<DBObject> list = MongodbUtil.getDoc("user_info",queryUser);
