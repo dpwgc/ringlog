@@ -27,7 +27,7 @@ public class UdpServer implements ServletContextListener {
             @Override
             public void run() {
                 try {
-                    //等待spring boot加载完后再运行UDP监听线程
+                    //等待spring boot加载完后再运行UDP监听线程（避免配置文件中的参数来不及加载进内存）
                     while (true){
                         if(UdpConfig.getUdpPort() != 0) {
                             break;

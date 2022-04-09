@@ -1,5 +1,5 @@
 # RingLog
-## 基于Spring Boot整合MongoDB实现的日志系统。
+## 基于Spring Boot整合UDP + MongoDB实现的日志收集系统。
 
 ***
 
@@ -114,3 +114,37 @@ note | this is a test log | Text | 否 | 日志备注信息
 }
 ```
 ***
+
+### Mongodb数据库
+
+#### user_info集合（管理员用户信息，用于检索日志时鉴权）
+* 存储文档格式
+```json
+{
+  "_id": {
+    "$oid": "62512b4da7e30cea2b43b51c"
+  },
+  "lv": 6,
+  "tag": "test",
+  "content": "redigo: nil returned",
+  "host": "88.88.88.88:8888",
+  "file": "/hello/service/test.go",
+  "note": "this is a test log",
+  "line": 15,
+  "time": {
+    "$numberLong": "1648380678385"
+  }
+}
+```
+#### log_data集合（日志数据，用于存储所有日志信息）
+* 存储文档格式
+```json
+{
+    "_id": {
+        "$oid": "624ebc1f728f90ef47d09f45"
+    },
+    "user": "admin",
+    "pwd": "e10adc3949ba59abbe56e057f20f883e"
+}
+```
+pwd密码用MD5加密

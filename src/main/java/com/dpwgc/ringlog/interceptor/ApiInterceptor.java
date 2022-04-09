@@ -6,6 +6,8 @@ import com.dpwgc.ringlog.util.MongodbUtil;
 import com.dpwgc.ringlog.util.ResultUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,10 +20,23 @@ import java.util.List;
 /**
  * 接口访问拦截器
  */
+@Component
 public class ApiInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        //在拦截器中设置允许跨域
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers","*");
+        response.setHeader("Access-Control-Allow-Methods","*");
+        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Max-Age","3600");
+
+        if (request.getMethod().equals("OPTIONS")) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return true;
+        }
 
         String user = request.getHeader("user");
         String pwd = Md5Util.getMd5(request.getHeader("pwd"));  //MD5加密
