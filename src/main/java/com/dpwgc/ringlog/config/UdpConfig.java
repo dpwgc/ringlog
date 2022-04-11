@@ -27,7 +27,8 @@ public class UdpConfig implements InitializingBean {
         //将配置文件中的信息加载到静态变量中
         port = udpPort;
         size = udpMaxDataSize;
-        System.out.println("UDP port:"+port);
+        System.out.println("[Ring Log] UDP port:"+port);
+        System.out.println("[Ring Log] UDP max data size:"+size);
     }
 
     public static int getUdpMaxDataSize() {

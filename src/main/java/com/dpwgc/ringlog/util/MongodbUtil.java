@@ -4,7 +4,6 @@ import com.dpwgc.ringlog.config.MongodbConfig;
 import com.mongodb.*;
 
 import java.net.UnknownHostException;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,29 +12,17 @@ import java.util.List;
 public class MongodbUtil {
 
     /**
-     * 与Mongodb的指定数据库建立连接（DB线程安全，全局唯一）
-     * @param addr mongodb的ip地址
-     * @param port mongodb的端口号
+     * 与mongodb/mongodb集群建立连接
+     * @param uri mongodb连接信息
      * @param database 数据库名称
-     * @param credential Mongodb账户权限验证
      * @return DB
-     * @throws UnknownHostException 抛出错误
+     * @throws UnknownHostException
      */
-    public static DB connDB(String addr, int port, String database, MongoCredential credential) throws UnknownHostException {
-        MongoClient mongoClient = new MongoClient(new ServerAddress(addr, port), Collections.singletonList(credential));
-        return mongoClient.getDB(database);
-    }
+    public static DB connDB(String uri,String database) throws UnknownHostException {
+        MongoClientURI mongoClientURI = new MongoClientURI(uri);
 
-    /**
-     * 与Mongodb的指定数据库建立连接（DB线程安全，全局唯一）
-     * @param addr mongodb的ip地址
-     * @param port mongodb的端口号
-     * @param database 数据库名称
-     * @return DB
-     * @throws UnknownHostException 抛出错误
-     */
-    public static DB connDB(String addr, int port, String database) throws UnknownHostException {
-        MongoClient mongoClient = new MongoClient(addr, port);
+        MongoClient mongoClient = new MongoClient(mongoClientURI);
+
         return mongoClient.getDB(database);
     }
 

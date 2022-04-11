@@ -1,8 +1,10 @@
 package com.dpwgc.ringlog.config;
 
+import com.dpwgc.ringlog.util.Md5Util;
 import com.dpwgc.ringlog.util.MongodbUtil;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
-import com.mongodb.MongoCredential;
+import com.mongodb.DBCollection;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -14,20 +16,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MongodbConfig implements InitializingBean {
 
-    @Value("${mongodb.addr}")
-    private String addr;
+    @Value("${spring.data.mongodb.uri}")
+    private String uri;
 
-    @Value("${mongodb.port}")
-    private int port;
-
-    @Value("${mongodb.database}")
+    @Value("${spring.data.mongodb.database}")
     private String database;
-
-    @Value("${mongodb.user}")
-    private String user;
-
-    @Value("${mongodb.pwd}")
-    private String pwd;
 
     /**
      * mongodb连接
@@ -41,18 +34,22 @@ public class MongodbConfig implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        System.out.println("mongodb loading...");
+        System.out.println("[Ring Log] MongoDB loading...");
 
-        //如果账号为空，则默认mongodb没有设置密码
-        if(user.length() == 0) {
-            db = MongodbUtil.connDB(addr,port,database);
-        } else {
-            //进行密码验证
-            MongoCredential credential = MongoCredential.createCredential(user, database, pwd.toCharArray());
-            db = MongodbUtil.connDB(addr,port,database,credential);
+        db = MongodbUtil.connDB(uri,database);
+
+        //获取用户集合user_info
+        DBCollection coll = MongodbUtil.getColl(db,"user_info");
+        //如果发现mongodb中没有user_info集合或者user_info集合为空
+        if (coll.count() == 0) {
+            //自动新建用户，默认用户名admin，密码123456（md5加密存入user_info）
+            BasicDBObject doc = new BasicDBObject();
+            doc.put("user", "admin");
+            doc.put("pwd", Md5Util.getMd5("123456"));
+            MongodbUtil.setDoc("user_info",doc);
         }
 
-        System.out.println("mongodb database:"+db.toString());
+        System.out.println("[Ring Log] MongoDB database:"+db.toString());
     }
 
     /**

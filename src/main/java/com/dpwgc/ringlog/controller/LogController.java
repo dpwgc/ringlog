@@ -43,11 +43,7 @@ public class LogController {
         BasicDBObject queryLog = new BasicDBObject();
 
         //日期区间匹配
-        if (end >= start) {
-            queryLog.put("time", new BasicDBObject("$gte", start).append("$lte", end));
-        } else {
-            queryLog.put("time", new BasicDBObject("$gte", start));
-        }
+        queryLog.put("time", new BasicDBObject("$gte", start).append("$lte", end));
 
         //日志等级匹配
         if (lv > 0) {
