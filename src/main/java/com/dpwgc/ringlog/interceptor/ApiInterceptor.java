@@ -26,6 +26,11 @@ public class ApiInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+        //如果是前端页面，则跳过
+        if(request.getMethod().equals("GET")){
+            return true;
+        }
+
         //在拦截器中设置允许跨域
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Headers","*");
@@ -45,9 +50,6 @@ public class ApiInterceptor implements HandlerInterceptor {
         BasicDBObject queryUser = new BasicDBObject();
         queryUser.put("user", user);
         queryUser.put("pwd", pwd);
-
-        System.out.println(user);
-        System.out.println(pwd);
 
         //查询用户
         List<DBObject> list = MongodbUtil.getDoc("user_info",queryUser);
