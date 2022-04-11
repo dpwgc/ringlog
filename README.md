@@ -1,12 +1,13 @@
 # RingLog
-## 基于Spring Boot整合UDP + MongoDB实现的日志收集系统。
+## 基于Spring Boot整合UDP、MongoDB及本地消息队列实现的日志收集系统。
 
 ***
 
 ### 启动项目
-* 配置application.properties文件，填写Mongodb配置及UDP服务端口。
-* 启动项目。
-* 启动后访问网页控制台: http://127.0.0.1:9000/#/
+* 部署MongoDB/MongoDB集群，创建数据库。
+* 配置application.properties文件，填写Mongodb配置及UDP服务配置。
+* 启动项目（应用首次启动将在指定MongoDB数据库下自动创建user_info集合）。
+* 启动后访问网页控制台: http://127.0.0.1:9000/#/ 。
 ***
 
 ### 日志收集方式
@@ -51,7 +52,7 @@ pwd | 123456 | Text | 是 | user_info集合中的管理员密码
 参数名 | 示例值 | 参数类型 | 是否必填 | 参数描述
 --- | --- | --- | --- | ---
 start | 1648380678385 | Text | 是 | 时间区间（开始）
-end | 1648380678386 | Text | 否 | 时间区间（结尾）
+end | 1648380678386 | Text | 是 | 时间区间（结尾）
 lv | 6 | Text | 否 | 日志级别
 tag | test | Text | 否 | 日志标签
 content | redis | Text | 否 | 日志内容
@@ -146,4 +147,30 @@ note | this is a test log | Text | 否 | 日志备注信息
     "pwd": "e10adc3949ba59abbe56e057f20f883e"
 }
 ```
-pwd密码用MD5加密
+pwd密码用MD5加密。
+当user_info不存在或user_info内没有用户信息时，应用会自动创建用户，默认用户名admin，密码123456。
+
+*** 
+
+### 项目结构
+* config `配置类`
+   * InterceptorConfig.java `拦截器配置`
+   * MongodbConfig.java `Mongodb连接配置`
+   * UdpConfig.java `UDP监听配置`
+* controller `控制器层`
+   * LogController.java `日志查询接口`
+* dao `模板层`
+   * LogMsg.java `日志消息模板`
+* interceptor `拦截器`
+   * ApiInterceptor.java `HTTP接口拦截器`
+* server `监听服务层`
+   * MQServer.java `本地消息队列消费服务`
+   * UdpServer.java `UDP监听消息服务`
+* service `HTTP接口服务层`
+   * LogService.java `日志查询服务`
+* util ``
+   * LogUtil.java `日志操作工具`
+   * Md5Util.java `MD5密钥生成工具`
+   * MongodbUtil.java `Mongodb操作工具`
+   * ResultUtil.java `接口返回模板`
+* RinglogApplication.java `启动类`
