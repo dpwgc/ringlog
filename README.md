@@ -1,6 +1,5 @@
 # RingLog
 ## 基于Spring Boot整合MongoDB、UDP/TCP及本地消息队列实现的日志收集系统。
-
 ***
 
 ### 实现原理
@@ -8,6 +7,7 @@
 * 使用UDP/TCP接收日志信息。
 * 使用ConcurrentLinkedQueue实现消息队列服务，所有日志信息先插入消息队列，再由后台线程异步插入MongoDB数据库。
 
+![avatar](./img1.jpg)
 ***
 
 ### 启动项目
@@ -16,6 +16,7 @@
 * 启动项目（应用首次启动将在指定MongoDB数据库下自动创建user_info集合）。
 * 启动后访问网页控制台: http://127.0.0.1:9000/#/ 。
 
+![avatar](./img2.jpg)
 ***
 
 ### 日志收集方式
@@ -167,7 +168,7 @@ note | this is a test log | Text | 否 | 日志备注信息
   "tag": "test",
   "content": "redigo: nil returned",
   "host": "88.88.88.88:8888",
-  "file": "/hello/service/test.go",
+  "file": "/service/test.go",
   "note": "this is a test log",
   "line": 15,
   "time": {
