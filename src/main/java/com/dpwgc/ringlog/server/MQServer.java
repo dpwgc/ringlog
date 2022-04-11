@@ -30,7 +30,7 @@ public class MQServer implements InitializingBean {
                 mq = new ConcurrentLinkedQueue<>();
                 System.out.println("[Ring Log] MQ server run");
                 while (true) {
-                    //从本地队列中读取udp日志消息
+                    //从本地队列中读取日志消息
                     byte[] buffer = mq.poll();
                     if(buffer != null) {
                         try {
