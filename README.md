@@ -116,8 +116,7 @@ note | this is a test log | Text | 否 | 日志备注信息
 ***
 
 ### Mongodb数据库
-
-#### user_info集合（管理员用户信息，用于检索日志时鉴权）
+#### log_data集合（日志数据，用于存储所有日志信息）
 * 存储文档格式
 ```json
 {
@@ -136,7 +135,7 @@ note | this is a test log | Text | 否 | 日志备注信息
   }
 }
 ```
-#### log_data集合（日志数据，用于存储所有日志信息）
+#### user_info集合（管理员用户信息，用于检索日志时鉴权）
 * 存储文档格式
 ```json
 {
