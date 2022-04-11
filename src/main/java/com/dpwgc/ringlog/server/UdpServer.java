@@ -16,9 +16,9 @@ import java.net.SocketException;
 @WebListener
 public class UdpServer implements ServletContextListener {
 
-    //UDP socket
-    public static DatagramSocket socket;
-
+    /**
+     * 启动UDP监听线程
+     */
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         new Thread(new Runnable() {
@@ -40,10 +40,13 @@ public class UdpServer implements ServletContextListener {
         }).start();
     }
 
+    /**
+     * 监听UDP消息
+     */
     private void listenUdpMsg(int port) throws SocketException {
 
-        //创建服务器端DatagramSocket，指定端口
-        socket = new DatagramSocket(port);
+        //UDP socket
+        DatagramSocket socket = new DatagramSocket(port);
 
         //持续监听UDP消息
         while (true) {
