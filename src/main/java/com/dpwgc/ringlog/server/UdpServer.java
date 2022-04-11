@@ -1,14 +1,10 @@
 package com.dpwgc.ringlog.server;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.dpwgc.ringlog.config.UdpConfig;
-import com.dpwgc.ringlog.dao.LogMsg;
-import com.dpwgc.ringlog.util.LogUtil;
-import lombok.extern.slf4j.Slf4j;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -17,9 +13,11 @@ import java.net.SocketException;
 /**
  * UDP监听服务
  */
-@Slf4j
 @WebListener
 public class UdpServer implements ServletContextListener {
+
+    //UDP socket
+    public static DatagramSocket socket;
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -33,8 +31,8 @@ public class UdpServer implements ServletContextListener {
                             break;
                         }
                     }
-                    System.out.println("UDP server run:"+ UdpConfig.getUdpPort());
-                    executeUdpMsg(UdpConfig.getUdpPort());
+                    System.out.println("[Ring Log] UDP server run:"+ UdpConfig.getUdpPort());
+                    listenUdpMsg(UdpConfig.getUdpPort());
                 } catch (SocketException e) {
                     e.printStackTrace();
                 }
@@ -42,11 +40,12 @@ public class UdpServer implements ServletContextListener {
         }).start();
     }
 
-    private void executeUdpMsg(int port) throws SocketException {
+    private void listenUdpMsg(int port) throws SocketException {
 
         //创建服务器端DatagramSocket，指定端口
-        DatagramSocket socket = new DatagramSocket(port);
+        socket = new DatagramSocket(port);
 
+        //持续监听UDP消息
         while (true) {
             byte[] buffer = new byte[UdpConfig.getUdpMaxDataSize()];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
@@ -55,18 +54,10 @@ public class UdpServer implements ServletContextListener {
                 socket.receive(packet);
                 buffer = packet.getData();
 
-                //将字节数据转为String类型
-                String bufString = new String(buffer, "GBK").trim();
+                //将buffer数组插入本地mq
+                MQServer.mq.add(buffer);
 
-                //将json字符串转换为LogMSG对象
-                String jsonString = JSONObject.toJSONString(bufString);
-                String s = JSON.parse(jsonString).toString();
-                LogMsg logMsg = JSONObject.parseObject(s, LogMsg.class);
-
-                //插入日志
-                LogUtil.set(logMsg);
-
-            } catch (Exception e) {
+            } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
         }
