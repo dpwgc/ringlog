@@ -23,21 +23,21 @@ public class TcpServer implements ServletContextListener {
      */
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //等待spring boot加载完后再运行UDP监听线程（避免配置文件中的参数来不及加载进内存）
-                    while (true){
-                        if(TcpConfig.getTcpPort() != 0) {
-                            break;
-                        }
+        new Thread(() -> {
+            try {
+                //等待spring boot加载完后再运行UDP监听线程（避免配置文件中的参数来不及加载进内存）
+                while (true){
+                    if(TcpConfig.getTcpPort() != 0) {
+                        break;
                     }
-                    System.out.println("[Ring Log] TCP server run:"+ TcpConfig.getTcpPort());
-                    listenTcpMsg(TcpConfig.getTcpPort());
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+
+                //开启TCP监听
+                System.out.println("[Ring Log] TCP server run:"+ TcpConfig.getTcpPort());
+                listenTcpMsg(TcpConfig.getTcpPort());
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }).start();
     }
