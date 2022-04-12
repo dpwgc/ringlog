@@ -58,6 +58,27 @@ public class MongodbUtil {
     }
 
     /**
+     * 在指定集合中批量插入文档
+     * @param collName 集合名称
+     * @param docs 要插入的文档列表
+     * @return boolean
+     */
+    public static boolean setDoc(String collName, List<DBObject> docs) {
+
+        //获取指定的mongodb集合
+        DBCollection coll = getColl(MongodbConfig.getDB(),collName);
+
+        try {
+            //批量插入文档
+            coll.insert(docs);
+            return true;
+        }catch (Exception e){
+            System.out.println(e.toString());
+            return false;
+        }
+    }
+
+    /**
      * 获取指定集合中的文档
      * @param collName 集合名称
      * @param query 查询条件
