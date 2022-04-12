@@ -1,11 +1,12 @@
 # RingLog
-## 基于Spring Boot整合MongoDB、UDP/TCP及本地消息队列实现的日志收集系统。
+## 基于Spring Boot整合MongoDB、Kafka及本地缓冲队列实现的日志收集系统。
 ***
 
 ### 实现原理
 * 使用MongoDB存储日志数据。
-* 使用UDP/TCP接收日志信息。
-* 使用ConcurrentLinkedQueue实现消息队列服务，所有日志信息先插入消息队列，再由后台线程异步插入MongoDB数据库。
+* 使用UDP/TCP接收外来日志信息。
+* 使用ConcurrentLinkedQueue实现本地缓冲队列，所有外来日志信息先插入本地缓冲队列，再由后台线程（一个或者多个消费者线程）将日志信息异步发送至外部消息队列Kafka。
+* 由Kafka消息队列将日志信息批量插入MongoDB数据库。
 
 ![avatar](./img1.jpg)
 ***
@@ -205,7 +206,8 @@ pwd密码用MD5加密。
 * interceptor `拦截器`
    * ApiInterceptor.java `HTTP接口拦截器`
 * server `监听服务层`
-   * MQServer.java `本地消息队列消费服务`
+   * KafkaServer.java `Kafka消息队列消费者服务`
+   * MqServer.java `本地缓冲队列消费者服务`
    * TcpServer.java `TCP监听消息服务`
    * UdpServer.java `UDP监听消息服务`
 * service `HTTP接口服务层`
