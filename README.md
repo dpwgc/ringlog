@@ -26,7 +26,7 @@
 ```json
 {
   "lv":6,
-  "tag":"test",
+  "tag":"test-0.0.1",
   "content":"redigo: nil returned",
   "host":"88.88.88.88:8888",
   "file":"/service/test.go",
@@ -36,7 +36,7 @@
 }
 ```
 ```json
-"{\n  \"lv\":6,\n  \"tag\":\"test\",\n  \"content\":\"redigo: nil returned\",\n  \"host\":\"88.88.88.88:8888\",\n  \"file\":\"/service/test.go\",\n  \"line\":15,\n  \"time\":1648380678385,\n  \"note\":\"this is a test log\"}"
+"{\n  \"lv\":6,\n  \"tag\":\"test-0.0.1\",\n  \"content\":\"redigo: nil returned\",\n  \"host\":\"88.88.88.88:8888\",\n  \"file\":\"/service/test.go\",\n  \"line\":15,\n  \"time\":1648380678385,\n  \"note\":\"this is a test log\"}"
 ```
 * 再将该JSON字符串转为字节数组，使用UDP/TCP发送到RingLog服务端，服务端UDP监听端口默认为8999，TCP监听端口默认为8998。
 #### 客户端代码示例
@@ -47,17 +47,17 @@
 	IP:   net.IPv4(127, 0, 0, 1),
 	Port: 8999,
  })
- socket.Write([]byte("{\n  \"lv\":6,\n  \"tag\":\"udp_test\",\n  \"content\":\"redigo: nil returned\",\n  \"host\":\"88.88.88.88:8888\",\n  \"file\":\"/hello/service/test.go\",\n  \"line\":15,\n  \"time\":1648380678385,\n  \"note\":\"this is a test log\"\n}")
+ socket.Write([]byte("{\n  \"lv\":6,\n  \"tag\":\"test-0.0.1\",\n  \"content\":\"redigo: nil returned\",\n  \"host\":\"88.88.88.88:8888\",\n  \"file\":\"/hello/service/test.go\",\n  \"line\":15,\n  \"time\":1648380678385,\n  \"note\":\"this is a test log\"\n}")
 ```
 #### 日志字段说明
-* lv 日志等级
-* tag 日志标签
+* lv 日志等级（整数表示，范围：1~8）
+* tag 日志标签（可以是所属项目名+项目版本号）
 * content 日志内容
-* host 日志所属主机名称
+* host 日志所属的主机（可以是主机名称或主机地址+应用程序端口号）
 * file 产生该日志的文件路径
 * line 日志产生于该文件的第几行
-* time 日志产生时间
-* note 日志备注
+* time 日志产生时间（毫秒级时间戳，13位，long整数）
+* note 日志备注（可以是对该日志的简短描述，或是额外的标注补充）
 #### 日志等级说明
 日志等级 lv（int类型）
 * 1 Emergency: system is unusable 导致系统不可用的事故
@@ -116,7 +116,7 @@ note | this is a test log | Text | 否 | 日志备注信息
 				"timeSecond": 1649486669
 			},
 			"lv": 6,
-			"tag": "test",
+			"tag": "test-0.0.1",
 			"content": "redigo: nil returned",
 			"host": "88.88.88.88:8888",
 			"file": "/service/test.go",
@@ -135,7 +135,7 @@ note | this is a test log | Text | 否 | 日志备注信息
 				"timeSecond": 1649486670
 			},
 			"lv": 6,
-			"tag": "test",
+			"tag": "test-0.0.1",
 			"content": "redigo: nil returned",
 			"host": "88.88.88.88:8888",
 			"file": "/service/test.go",
@@ -165,7 +165,7 @@ note | this is a test log | Text | 否 | 日志备注信息
     "$oid": "62512b4da7e30cea2b43b51c"
   },
   "lv": 6,
-  "tag": "test",
+  "tag": "test-0.0.1",
   "content": "redigo: nil returned",
   "host": "88.88.88.88:8888",
   "file": "/service/test.go",
