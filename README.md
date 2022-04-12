@@ -12,8 +12,9 @@
 ***
 
 ### 启动项目
-* 部署MongoDB/MongoDB集群，创建数据库。
-* 填写resources/application.properties配置文件，填写Mongodb配置及UDP/TCP监听服务配置。
+* 部署MongoDB/MongoDB集群，创建数据库：ring_log。
+* 部署Kafka/Kafka集群，创建Topic：ring_log。
+* 填写resources/application.properties配置文件，填写Mongodb配置、Kafka配置、UDP/TCP监听服务配置。
 * 启动项目（应用首次启动将在指定MongoDB数据库下自动创建user_info集合）。
 * 启动后访问网页控制台: http://127.0.0.1:9000/#/ 。
 
