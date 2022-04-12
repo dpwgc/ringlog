@@ -4,9 +4,9 @@
 
 ### 实现原理
 * 使用MongoDB存储日志数据。
-* 使用UDP/TCP接收外来日志信息。
+* 使用UDP/TCP监听接收外来日志信息。
 * 使用ConcurrentLinkedQueue实现本地缓冲队列，所有外来日志信息先插入本地缓冲队列，再由后台线程（一个或者多个消费者线程）将日志信息异步发送至外部消息队列Kafka。
-* 由Kafka消息队列将日志信息批量插入MongoDB数据库。
+* 由Kafka消费者将日志信息批量插入MongoDB数据库。
 
 ![avatar](./img1.jpg)
 ***
