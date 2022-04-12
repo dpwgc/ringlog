@@ -30,6 +30,11 @@ public class UdpServer implements ServletContextListener {
                     }
                 }
 
+                //如果UDP监听端口设为-1，则表示不开启UDP监听
+                if(UdpConfig.getUdpPort() == -1) {
+                    return;
+                }
+
                 //开启UDP监听
                 System.out.println("[Ring Log] UDP server run:"+ UdpConfig.getUdpPort());
                 listenUdpMsg(UdpConfig.getUdpPort());
@@ -58,7 +63,7 @@ public class UdpServer implements ServletContextListener {
                 buffer = packet.getData();
 
                 //将buffer数组插入本地mq
-                MQServer.mq.add(buffer);
+                MqServer.mq.add(buffer);
 
             } catch (IOException e) {
                 System.out.println(e.getMessage());

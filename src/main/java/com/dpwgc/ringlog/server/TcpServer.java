@@ -32,6 +32,11 @@ public class TcpServer implements ServletContextListener {
                     }
                 }
 
+                //如果TCP监听端口设为-1，则表示不开启TCP监听
+                if(TcpConfig.getTcpPort() == -1) {
+                    return;
+                }
+
                 //开启TCP监听
                 System.out.println("[Ring Log] TCP server run:"+ TcpConfig.getTcpPort());
                 listenTcpMsg(TcpConfig.getTcpPort());
@@ -98,7 +103,7 @@ public class TcpServer implements ServletContextListener {
             }
 
             //将日志信息转为字节数组插入本地mq
-            MQServer.mq.add(bufString.toString().getBytes());
+            MqServer.mq.add(bufString.toString().getBytes());
 
             //回复客户端
             Writer writer = new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8);
