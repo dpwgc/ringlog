@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 /**
  * 日志信息模板
  */
-@Document(indexName = "ring_log")
+@Document(indexName = "#{@indexName}")
 public class LogMsg {
 
     @Id
