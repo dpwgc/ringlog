@@ -1,9 +1,19 @@
 package com.dpwgc.ringlog.dao;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
 /**
  * 日志信息模板
  */
+@Document(indexName = "ring_log")
 public class LogMsg {
+
+    @Id
+    @Field(name = "id", type = FieldType.Keyword)
+    private String id;      //由es自动创建id
 
     /**
      * 日志等级lv（int类型）
@@ -17,11 +27,22 @@ public class LogMsg {
      * 8 Debug: debug-level messages 开发时对系统进行诊断的信息
      */
     private int lv;         //日志等级
+
+    @Field(analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String tag;     //日志标签
+
+    @Field(analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String content; //日志内容
+
+    @Field(analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String host;    //日志所属主机名称
+
+    @Field(analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String file;    //产生该日志的文件路径
+
+    @Field(analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String note;    //日志备注（自定义扩展）
+
     private int line;       //日志产生于该文件的第几行
     private long time;      //日志产生时间
 

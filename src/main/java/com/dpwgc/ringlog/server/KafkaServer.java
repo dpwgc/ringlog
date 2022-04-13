@@ -7,6 +7,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,9 @@ import java.util.List;
  */
 @Component
 public class KafkaServer {
+
+    @Resource
+    LogUtil logUtil;
 
     /**
      * 批量消费消息
@@ -38,7 +42,7 @@ public class KafkaServer {
         }
 
         //批量插入日志
-        LogUtil.set(logs);
+        logUtil.set(logs);
     }
 }
 
