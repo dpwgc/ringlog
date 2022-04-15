@@ -60,7 +60,7 @@ public class MqServer implements InitializingBean {
                     //将字节数组序列化为json字符串
                     String jsonStr = JSON.parse(buffer).toString();
 
-                    //将json序列化后的日志信息插入kafka消息队列
+                    //将json序列化后的日志信息列表插入kafka消息队列
                     kafkaTemplate.send(kafkaTopic, jsonStr);
 
                 } catch (Exception e) {

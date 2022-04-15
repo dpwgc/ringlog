@@ -1,6 +1,6 @@
 package com.dpwgc.ringlog.server;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
 import com.dpwgc.ringlog.dao.LogMsg;
 import com.dpwgc.ringlog.util.LogUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -29,20 +29,21 @@ public class KafkaServer {
             topics = "${spring.kafka.template.default-topic}")
     public void listen(List<ConsumerRecord<String, String>> records) {
 
-        //日志信息列表
-        List<LogMsg> logs = new ArrayList<>();
+        //日志信息列表logList
+        List<LogMsg> logList = new ArrayList<>();
 
         for (ConsumerRecord<String, String> record : records) {
 
-            //将json字符串转为LogMsg对象
-            LogMsg logMsg = JSONObject.parseObject(record.value(), LogMsg.class);
+            //将json字符串转为LogMsg列表
+            JSONArray jsonArray = JSONArray.parseArray(record.value());
+            List<LogMsg> logs = jsonArray.toJavaList(LogMsg.class);
 
-            //将日志对象添加进日志列表
-            logs.add(logMsg);
+            //将logs添加进日志列表logList
+            logList.addAll(logs);
         }
 
         //批量插入日志
-        logUtil.set(logs);
+        logUtil.set(logList);
     }
 }
 
