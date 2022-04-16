@@ -19,9 +19,12 @@
 * 部署Elasticsearch/Elasticsearch集群，创建索引：ring_log。
 * 部署Kafka/Kafka集群，创建Topic：ring_log。
 * 填写resources/application.properties配置文件，填写Elasticsearch配置、Kafka配置、UDP/TCP监听服务配置。
-* 启动项目，访问控制台 http://127.0.0.1:9000/#/ ，控制台自带三条件通配符查询功能（条件value为空则不启用该条件检索），控制台登录账号密码为项目连接elasticsearch的账号密码。
+* 启动项目，访问控制台 http://127.0.0.1:9000/#/ ，控制台自带三条件通配符检索功能，条件value为空则不启用该条件检索，即最多只能设置三个检索条件，控制台登录账号密码为项目连接elasticsearch的账号密码。
 
 ![avatar](./img/img3.jpg)
+
+（通配符规则：'hi*'：tag、content、note、host、file这些字段中有以'hi'为前缀的值，'*hi*'：tag、content、note、host、file这些字段的值中包含'hi'）
+
 * 或使用Kibana连接Elasticsearch并检索日志。
 
 ![avatar](./img/img2.jpg)
