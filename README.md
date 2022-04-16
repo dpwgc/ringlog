@@ -12,17 +12,19 @@
 * 使用ConcurrentLinkedQueue实现服务端缓冲队列，所有外来日志数据先插入缓冲队列，再由后台线程（一个或者多个消费者线程）将日志数据异步发送至外部消息队列Kafka。
 * Kafka中的一条消息中可以包含一个或者多个日志信息（JSON字符串形式存储），由Kafka消费者将日志数据批量插入Elasticsearch。
 
-![avatar](./img1.jpg)
+![avatar](./img/img1.jpg)
 ***
 
 ### 启动项目
 * 部署Elasticsearch/Elasticsearch集群，创建索引：ring_log。
 * 部署Kafka/Kafka集群，创建Topic：ring_log。
 * 填写resources/application.properties配置文件，填写Elasticsearch配置、Kafka配置、UDP/TCP监听服务配置。
-* 启动项目，访问 http://127.0.0.1:9000/ ，返回"hello"表明项目启动成功"。
-* 使用Kibana连接Elasticsearch并检索日志。
+* 启动项目，访问控制台 http://127.0.0.1:9000/#/ ，控制台自带三条件通配符查询功能（条件value为空则不启用该条件检索），控制台登录账号密码为项目连接elasticsearch的账号密码。
 
-![avatar](./img2.jpg)
+![avatar](./img/img3.jpg)
+* 或使用Kibana连接Elasticsearch并检索日志。
+
+![avatar](./img/img2.jpg)
 ***
 
 ### 日志收集方式

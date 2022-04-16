@@ -28,24 +28,50 @@ public class LogService {
 
     /**
      * 检索日志（通配符+时间范围）
-     * @param value 检索内容
+     * @param value1 检索条件1
+     * @param value2 检索条件2
+     * @param value3 检索条件3
      * @param start 时间区间开头
      * @param end 时间区间结尾
      * @return ResultUtil<Object>
      */
-    public ResultUtil<Object> search(String value,long start,long end){
+    public ResultUtil<Object> search(String value1,String value2,String value3,long start,long end){
 
         ResultUtil<Object> resultUtil = new ResultUtil<>();
 
         //根据一个值查询多个字段  并高亮显示  这里的查询是取并集，即多个字段只需要有一个字段满足即可
         //需要查询的字段（通配符查询）
-        BoolQueryBuilder boolQueryBuilder= QueryBuilders.boolQuery()
-                .should(QueryBuilders.wildcardQuery("tag",value))
-                .should(QueryBuilders.wildcardQuery("content",value))
-                .should(QueryBuilders.wildcardQuery("note",value))
-                .should(QueryBuilders.wildcardQuery("host",value))
-                .should(QueryBuilders.wildcardQuery("file",value))
-                .must(QueryBuilders.rangeQuery("time").from(start).to(end));
+
+        BoolQueryBuilder boolQueryBuilder= QueryBuilders.boolQuery();
+
+        if (value1.length() > 0) {
+            boolQueryBuilder.must(QueryBuilders.boolQuery()
+                    .should(QueryBuilders.wildcardQuery("tag",value1))
+                    .should(QueryBuilders.wildcardQuery("content",value1))
+                    .should(QueryBuilders.wildcardQuery("note",value1))
+                    .should(QueryBuilders.wildcardQuery("host",value1))
+                    .should(QueryBuilders.wildcardQuery("file",value1)));
+        }
+
+        if (value2.length() > 0) {
+            boolQueryBuilder.must(QueryBuilders.boolQuery()
+                    .should(QueryBuilders.wildcardQuery("tag",value2))
+                    .should(QueryBuilders.wildcardQuery("content",value2))
+                    .should(QueryBuilders.wildcardQuery("note",value2))
+                    .should(QueryBuilders.wildcardQuery("host",value2))
+                    .should(QueryBuilders.wildcardQuery("file",value2)));
+        }
+
+        if (value3.length() > 0) {
+            boolQueryBuilder.must(QueryBuilders.boolQuery()
+                    .should(QueryBuilders.wildcardQuery("tag",value3))
+                    .should(QueryBuilders.wildcardQuery("content",value3))
+                    .should(QueryBuilders.wildcardQuery("note",value3))
+                    .should(QueryBuilders.wildcardQuery("host",value3))
+                    .should(QueryBuilders.wildcardQuery("file",value3)));
+        }
+
+        boolQueryBuilder.must(QueryBuilders.rangeQuery("time").from(start).to(end));
 
         //构建高亮查询
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()

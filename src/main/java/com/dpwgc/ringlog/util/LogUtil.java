@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 日志记录工具（基于mongodb）
+ * 日志记录工具（基于elasticsearch）
  */
 @Component
 public class LogUtil {

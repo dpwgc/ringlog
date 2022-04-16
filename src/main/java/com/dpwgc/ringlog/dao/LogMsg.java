@@ -46,6 +46,14 @@ public class LogMsg {
     private int line;       //日志产生于该文件的第几行
     private long time;      //日志产生时间
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     public int getLv() {
         return lv;
     }
