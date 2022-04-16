@@ -23,7 +23,7 @@
 
 ![avatar](./img/img3.jpg)
 
-（通配符规则：'hi*'：tag、content、note、host、file这些字段中有以'hi'为前缀的值，'*hi*'：tag、content、note、host、file这些字段的值中包含'hi'）
+（通配符检索规则：'hi*'：tag、content、note、host、file这些字段中有以'hi'为前缀的值，'*'代表一个或多个字符）
 
 * 或使用Kibana连接Elasticsearch并检索日志。
 
